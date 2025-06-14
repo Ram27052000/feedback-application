@@ -13,7 +13,6 @@ public class Feedback {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name = "feedback_generator", sequenceName = "feedback_seq_generator", allocationSize = 1)
-
     private Integer id;
 
     private String name;

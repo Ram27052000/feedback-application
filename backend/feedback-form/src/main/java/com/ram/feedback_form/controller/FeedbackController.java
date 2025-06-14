@@ -8,6 +8,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins = "http://localhost:4200")
 public class FeedbackController {
 
     private final FeedbackRepository feedbackRepository;
@@ -18,7 +19,7 @@ public class FeedbackController {
 
     @PostMapping("/feedback")
     public void feedbackForm(@RequestBody Feedback feedback) {
-        this.feedbackRepository.save(feedback);
+      this.feedbackRepository.save(feedback);
     }
 
     @GetMapping("/get-feedback")

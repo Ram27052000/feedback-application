@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {NgForm} from "@angular/forms";
 import {FeedbackForm} from "./models/feedbackform";
+import {FeedbackService} from "./shared/feedback.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-feedback-form',
@@ -15,7 +17,7 @@ export class FeedbackFormComponent implements OnInit {
     feedback : ''
   }
   submitted = false;
-  constructor() { }
+  constructor(private feedbackService: FeedbackService,private snackbar: MatSnackBar) { }
 
   ngOnInit(): void {
   }
@@ -25,8 +27,15 @@ export class FeedbackFormComponent implements OnInit {
     if(form.invalid){
         return;
     }
-    form.reset();
-    this.submitted = false;
-    console.log('form', form)
+    this.feedbackService.submitFeedbackForm(form.value).subscribe({
+      next:() =>{
+        form.reset();
+        this.submitted = false;
+        this.snackbar.open("Feedback Submitted Successfully", "OK");
+      },
+      error:(err) =>{
+        console.log(err);
+      }
+    })
   }
 }
