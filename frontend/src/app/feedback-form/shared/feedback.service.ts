@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {NgForm} from "@angular/forms";
+import {FormGroup} from "@angular/forms";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 
@@ -11,7 +11,7 @@ export class FeedbackService {
   constructor(private http: HttpClient) {
   }
 
-  submitFeedbackForm(formData: NgForm): Observable<void>{
+  submitFeedbackForm(formData: FormGroup): Observable<void>{
       console.log("submitFeedbackForm", formData);
       return this.http.post<void>(`${this.baseUrl}/feedback`, formData)
   }
