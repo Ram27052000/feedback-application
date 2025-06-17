@@ -1,1 +1,9 @@
-<app-feedback-form></app-feedback-form>
+<nav>
+    <div>
+        <a *ngIf="router.url !=='/feedback-form' " routerLink="/feedback-form">feedbackform</a>
+    </div>
+    <div>
+        <a *ngIf="router.url !== '/feedback-list'" routerLink="/feedback-list">feedbacklist</a>
+    </div>
+</nav>
+<router-outlet></router-outlet>

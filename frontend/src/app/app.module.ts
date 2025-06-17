@@ -11,11 +11,13 @@ import {FormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import {ReactiveFormsModule} from "@angular/forms";
+import { FeedbackListComponent } from './feedback-list/feedback-list.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    FeedbackFormComponent
+    FeedbackFormComponent,
+    FeedbackListComponent
   ],
   imports: [
     BrowserModule,

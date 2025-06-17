@@ -1,40 +1,44 @@
 <form [formGroup]="feedbackForm" class="example-form" (ngSubmit)="onSubmit(feedbackForm)">
-  <mat-form-field>
-    <mat-label>Name</mat-label>
-    <input name="name" matInput placeholder="Please Enter the Name" formControlName="name">
-    <mat-error *ngIf="(feedbackForm.get('name')?.hasError('required')) && feedbackForm.get('name')?.touched || submitted">
-      Name is
-      required
-    </mat-error>
-    <mat-error *ngIf="feedbackForm.get('name')?.hasError('minlength')">Name must be of three character
-    </mat-error>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Email</mat-label>
-    <input name="email" matInput placeholder="Please Enter the email" email formControlName="email">
-    <mat-error
-      *ngIf="(feedbackForm.get('email')?.hasError('required')) && feedbackForm.get('email')?.touched || submitted">Email is
-      required
-    </mat-error>
-    <mat-error *ngIf="feedbackForm.get('email')?.hasError('email') && feedbackForm.get('email')?.touched || submitted">
-      please
-      enter the email in right format, for ex: admin@gmail.com
-    </mat-error>
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Feedback</mat-label>
-    <textarea name="feedback" matInput placeholder="Please Enter the feedback" formControlName="feedback"></textarea>
-    <mat-error
-      *ngIf="feedbackForm.get('feedback')?.hasError('required') && feedbackForm.get('feedback')?.touched || submitted">
-      feedback is required
-    </mat-error>
-    <mat-error
-      *ngIf="feedbackForm.get('feedback')?.hasError('minlength') && feedbackForm.get('feedback')?.touched || submitted">
-      Enter the
-      feedback between 10 to 20 words
-    </mat-error>
-  </mat-form-field>
-  <button type="submit" mat-raised-button color="primary" [disabled]="feedbackForm.invalid">Submit</button>
+    <mat-form-field>
+        <mat-label>Name</mat-label>
+        <input name="name" matInput placeholder="Please Enter the Name" formControlName="name">
+        <mat-error
+                *ngIf="(feedbackForm.get('name')?.hasError('required')) && feedbackForm.get('name')?.touched || submitted">
+            Name is
+            required
+        </mat-error>
+        <mat-error *ngIf="feedbackForm.get('name')?.hasError('minlength')">Name must be of three character
+        </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input name="email" matInput placeholder="Please Enter the email" email formControlName="email">
+        <mat-error
+                *ngIf="(feedbackForm.get('email')?.hasError('required')) && feedbackForm.get('email')?.touched || submitted">
+            Email is
+            required
+        </mat-error>
+        <mat-error
+                *ngIf="feedbackForm.get('email')?.hasError('email') && feedbackForm.get('email')?.touched || submitted">
+            please
+            enter the email in right format, for ex: admin@gmail.com
+        </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+        <mat-label>Feedback</mat-label>
+        <textarea name="feedback" matInput placeholder="Please Enter the feedback"
+                  formControlName="feedback"></textarea>
+        <mat-error
+                *ngIf="feedbackForm.get('feedback')?.hasError('required') && feedbackForm.get('feedback')?.touched || submitted">
+            feedback is required
+        </mat-error>
+        <mat-error
+                *ngIf="feedbackForm.get('feedback')?.hasError('minlength') && feedbackForm.get('feedback')?.touched || submitted">
+            Enter the
+            feedback between 10 to 20 words
+        </mat-error>
+    </mat-form-field>
+    <button type="submit" mat-raised-button color="primary" [disabled]="feedbackForm.invalid">Submit</button>
 </form>
 
 <!--<form #myForm="ngForm" class="example-form" (ngSubmit)="onSubmit(myForm)">-->
