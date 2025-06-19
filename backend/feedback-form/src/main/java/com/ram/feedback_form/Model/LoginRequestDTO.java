@@ -1,0 +1,9 @@
+package com.ram.feedback_form.Model;
+
+import lombok.Data;
+
+@Data
+public class LoginRequestDTO {
+    private String email;
+    private String password;
+}
