@@ -23,4 +23,9 @@ public class JwtUtils {
         return Jwts.builder().setSubject(email).setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME)).signWith(key, SignatureAlgorithm.HS256).compact();
     }
+
+    public String extractUserName(String token){
+        Key key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
+        return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJwt(token).getBody().getSubject();
+    }
 }
