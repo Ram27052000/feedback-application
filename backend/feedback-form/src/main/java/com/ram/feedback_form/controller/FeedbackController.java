@@ -17,6 +17,11 @@ public class FeedbackController {
         this.feedbackRepository = feedbackRepository;
     }
 
+    @GetMapping("/welcome")
+    public String welcome() {
+        return "Welcome to Feedback Application";
+    }
+
     @PostMapping("/feedback")
     public void feedbackForm(@RequestBody Feedback feedback) {
       this.feedbackRepository.save(feedback);

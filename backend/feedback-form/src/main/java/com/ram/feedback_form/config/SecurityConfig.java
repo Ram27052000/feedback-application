@@ -1,7 +1,5 @@
 package com.ram.feedback_form.config;
 
-import com.ram.feedback_form.Security.CustomDetailsService;
-import com.ram.feedback_form.Security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,6 +9,11 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -19,45 +22,67 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final CustomDetailsService customDetailsService;
-    private final JwtAuthenticationFilter jwtFilter;
-    private final PasswordEncoder passwordEncoder;
-
-    public SecurityConfig(CustomDetailsService customDetailsService,
-                          JwtAuthenticationFilter jwtFilter,
-                          PasswordEncoder passwordEncoder) {
-        this.customDetailsService = customDetailsService;
-        this.jwtFilter = jwtFilter;
-        this.passwordEncoder = passwordEncoder;
-    }
-
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/login", "/api/register").permitAll()
-                        .anyRequest().authenticated()
-                )
-                .sessionManagement(sess -> sess
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
-                .authenticationProvider(daoAuthenticationProvider())
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.authorizeHttpRequests(authz -> authz.requestMatchers("/api/**").authenticated().anyRequest().permitAll())
+                .formLogin(form -> form.permitAll().defaultSuccessUrl("/api/welcome"));
         return http.build();
     }
 
     @Bean
-    public AuthenticationProvider daoAuthenticationProvider() {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(customDetailsService);
-        provider.setPasswordEncoder(passwordEncoder);
-        return provider;
+    public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
+        String rawPassword = "password123";
+        String encodedPassword = passwordEncoder.encode(rawPassword);
+        UserDetails user = User.withUsername("Alice").password(encodedPassword).roles("USER").build();
+        UserDetails admin =  User.withUsername("Admin").password(encodedPassword).roles("USER").build();
+        return new InMemoryUserDetailsManager(user, admin);
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
-        return http.getSharedObject(AuthenticationManager.class);
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }
+//
+//    private final CustomDetailsService customDetailsService;
+//    private final JwtAuthenticationFilter jwtFilter;
+//    private final PasswordEncoder passwordEncoder;
+//
+//    public SecurityConfig(CustomDetailsService customDetailsService,
+//                          JwtAuthenticationFilter jwtFilter,
+//                          PasswordEncoder passwordEncoder) {
+//        this.customDetailsService = customDetailsService;
+//        this.jwtFilter = jwtFilter;
+//        this.passwordEncoder = passwordEncoder;
+//    }
+//
+//    @Bean
+//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//        http
+//                .csrf(AbstractHttpConfigurer::disable)
+//                .authorizeHttpRequests(auth -> auth
+//                        .requestMatchers("/api/login", "/api/register").permitAll()
+//                        .anyRequest().authenticated()
+//                )
+//                .sessionManagement(sess -> sess
+//                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                )
+//                .authenticationProvider(daoAuthenticationProvider())
+//                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+//
+//        return http.build();
+//    }
+//
+//    @Bean
+//    public AuthenticationProvider daoAuthenticationProvider() {
+//        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+//        provider.setUserDetailsService(customDetailsService);
+//        provider.setPasswordEncoder(passwordEncoder);
+//        return provider;
+//    }
+//
+//    @Bean
+//    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+//        return http.getSharedObject(AuthenticationManager.class);
+//    }
+
