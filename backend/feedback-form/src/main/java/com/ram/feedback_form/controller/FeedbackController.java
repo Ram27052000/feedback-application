@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/feedback")
 @CrossOrigin(origins = "http://localhost:4200")
 public class FeedbackController {
 
@@ -22,7 +22,7 @@ public class FeedbackController {
         return "Welcome to Feedback Application";
     }
 
-    @PostMapping("/feedback")
+    @PostMapping("/post-feedback")
     public void feedbackForm(@RequestBody Feedback feedback) {
       this.feedbackRepository.save(feedback);
     }
