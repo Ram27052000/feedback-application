@@ -4,6 +4,7 @@ import com.ram.feedback_form.Repository.UserRepository;
 import com.ram.feedback_form.Service.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,6 +17,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 
 @Configuration
 @EnableWebSecurity
@@ -33,6 +36,12 @@ public class SecurityConfig {
                 .formLogin(form -> form.permitAll().defaultSuccessUrl("/api/feedback/welcome"));
         return http.build();
     }
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
+    }
+
 
 
     @Bean
